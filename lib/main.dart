@@ -9,6 +9,7 @@ import 'package:progress_indicators/progress_indicators.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
+import 'extra2.dart';
 
 void main() {
   runApp(MyApp());
@@ -40,10 +41,10 @@ class MyApp extends StatefulWidget {
   @override
   State<MyApp> createState() => _MyAppState();
 }
-
+late Future<List<SpecialOffers>> specialOfferFuture;
 class _MyAppState extends State<MyApp> {
   late Future<List<PageViewModel>> pageViewFuture;
-  late Future<List<SpecialOffers>> specialOfferFuture;
+  
   late Future<List<EventsModel>> eventFuture;
   PageController pageController =
       PageController(keepPage: true, initialPage: 5001, viewportFraction: 0.85);
@@ -73,42 +74,66 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        bottomNavigationBar: BottomAppBar( 
+        bottomNavigationBar: BottomAppBar(
           color: Colors.red,
           shape: CircularNotchedRectangle(),
-          notchMargin:4,
+          notchMargin: 4,
           child: Container(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  width: MediaQuery.of(context).size.width*0.5-25,
+                  width: MediaQuery.of(context).size.width * 0.5 - 25,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(bottom: 5),
-                        child: IconButton(onPressed:(){},icon: Icon(Icons.favorite_border,size: 30,color: Colors.white,)),
+                        child: IconButton(
+                            onPressed: () {},
+                            icon: Icon(
+                              Icons.favorite_border,
+                              size: 30,
+                              color: Colors.white,
+                            )),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 5),
-                        child: IconButton(onPressed:(){},icon: Icon(Icons.person,size: 30,color: Colors.white,)),
+                        child: IconButton(
+                            onPressed: () {},
+                            icon: Icon(
+                              Icons.person,
+                              size: 30,
+                              color: Colors.white,
+                            )),
                       ),
                     ],
                   ),
                 ),
                 Container(
-                  width: MediaQuery.of(context).size.width*0.5-15,
+                  width: MediaQuery.of(context).size.width * 0.5 - 15,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(bottom: 5),
-                        child: IconButton(onPressed:(){},icon: Icon(Icons.category_outlined,size: 30,color: Colors.white,)),
+                        child: IconButton(
+                            onPressed: () {},
+                            icon: Icon(
+                              Icons.category_outlined,
+                              size: 30,
+                              color: Colors.white,
+                            )),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 5),
-                        child: IconButton(onPressed:(){},icon: Icon(Icons.search,size: 30,color: Colors.white,)),
+                        child: IconButton(
+                            onPressed: () {},
+                            icon: Icon(
+                              Icons.search,
+                              size: 30,
+                              color: Colors.white,
+                            )),
                       ),
                     ],
                   ),
@@ -119,11 +144,10 @@ class _MyAppState extends State<MyApp> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {},
-          child: Icon(Icons.home_outlined,size: 35),
+          child: Icon(Icons.home_outlined, size: 35),
           backgroundColor: Colors.red,
-          
-          ),
-        floatingActionButtonLocation:FloatingActionButtonLocation.centerDocked,
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         drawer: Drawer(),
         appBar: AppBar(
           // leading: Icon(CupertinoIcons.person),
@@ -182,7 +206,8 @@ class _MyAppState extends State<MyApp> {
                                       ),
                                       onDotClicked: (index) {
                                         pageController.animateToPage(index,
-                                            duration: Duration(milliseconds: 300),
+                                            duration:
+                                                Duration(milliseconds: 300),
                                             curve: Curves.easeInOut);
                                       },
                                     ),
@@ -268,7 +293,9 @@ class _MyAppState extends State<MyApp> {
                               return ListView.builder(
                                   shrinkWrap: true,
                                   reverse: true,
-                                  physics: BouncingScrollPhysics(decelerationRate: ScrollDecelerationRate.fast),
+                                  physics: BouncingScrollPhysics(
+                                      decelerationRate:
+                                          ScrollDecelerationRate.fast),
                                   scrollDirection: Axis.horizontal,
                                   itemCount: specialOfferFuture!.length + 1,
                                   itemBuilder: (context, position) {
@@ -298,7 +325,13 @@ class _MyAppState extends State<MyApp> {
                                                   right: 10,
                                                   bottom: 10),
                                               child: OutlinedButton(
-                                                onPressed: () {},
+                                                onPressed: () {
+                                                  Navigator.push(context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) {
+                                                  return AllProducts();
+                                                }));
+                                                },
                                                 child: Row(
                                                   children: [
                                                     Icon(
@@ -317,31 +350,73 @@ class _MyAppState extends State<MyApp> {
                                                             fontFamily:
                                                                 'iranyekan',
                                                             fontWeight:
-                                                                FontWeight.w200),
+                                                                FontWeight
+                                                                    .w200),
                                                       ),
                                                     ),
                                                   ],
                                                 ),
                                                 style: OutlinedButton.styleFrom(
                                                   side: BorderSide(
-                                                      color: Colors.transparent),
+                                                      color:
+                                                          Colors.transparent),
                                                 ),
                                               ),
                                             )
                                           ],
                                         ),
                                       );
-                                    } else {
+                                    } 
+                                    else if (position <= 6 && position >= 1) {
                                       return showSpecialOffer(
                                           specialOfferFuture[position - 1]);
+                                    } 
+                                    else if (position == 7) {
+                                      return Center(
+                                          child: OutlinedButton(
+                                            onPressed: () {
+                                              Navigator.push(context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) {
+                                                return AllProducts();
+                                              }));
+                                            },
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.navigate_before,
+                                                  color: Colors.white,
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets.only(
+                                                      bottom: 3),
+                                                  child: Text(
+                                                    "مشاهده همه",
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 11,
+                                                        fontFamily: 'iranyekan',
+                                                        fontWeight:
+                                                            FontWeight.w200),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            style: OutlinedButton.styleFrom(
+                                              side: BorderSide(
+                                                  color: Colors.transparent),
+                                            ),
+                                          ));
                                     }
                                   });
                             } else {
-                              return JumpingDotsProgressIndicator(
-                                color: Colors.white,
-                                numberOfDots: 3,
-                                dotSpacing: 3,
-                                fontSize: 5,
+                              return Center(
+                                child: JumpingDotsProgressIndicator(
+                                  color: Colors.white,
+                                  numberOfDots: 3,
+                                  dotSpacing: 3,
+                                  fontSize: 5,
+                                ),
                               );
                             }
                           }),
@@ -356,24 +431,41 @@ class _MyAppState extends State<MyApp> {
                             List<EventsModel>? eventFuture = snapshot.data;
                             return Container(
                               child: Column(
-                                children:[
+                                children: [
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
                                       Container(
-                                        height: MediaQuery.of(context).size.height*0.15,
-                                        width: MediaQuery.of(context).size.width*0.45,
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.15,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.45,
                                         child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(15),
-                                          child: Image.asset("assets/images/"+eventFuture![0].image!,fit:BoxFit.fill),
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          child: Image.asset(
+                                              "assets/images/" +
+                                                  eventFuture![0].image!,
+                                              fit: BoxFit.fill),
                                         ),
                                       ),
                                       Container(
-                                        height: MediaQuery.of(context).size.height*0.15,
-                                        width: MediaQuery.of(context).size.width*0.45,
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.15,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.45,
                                         child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(15),
-                                          child: Image.asset("assets/images/"+eventFuture![1].image!,fit:BoxFit.fill),
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          child: Image.asset(
+                                              "assets/images/" +
+                                                  eventFuture![1].image!,
+                                              fit: BoxFit.fill),
                                         ),
                                       ),
                                     ],
@@ -381,22 +473,43 @@ class _MyAppState extends State<MyApp> {
                                   Padding(
                                     padding: const EdgeInsets.all(5),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
                                       children: [
                                         Container(
-                                          height: MediaQuery.of(context).size.height*0.15,
-                                          width: MediaQuery.of(context).size.width*0.45,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.15,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.45,
                                           child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(15),
-                                            child: Image.asset("assets/images/"+eventFuture![2].image!,fit:BoxFit.fill),
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            child: Image.asset(
+                                                "assets/images/" +
+                                                    eventFuture![2].image!,
+                                                fit: BoxFit.fill),
                                           ),
                                         ),
                                         Container(
-                                          height: MediaQuery.of(context).size.height*0.15,
-                                          width: MediaQuery.of(context).size.width*0.45,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.15,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.45,
                                           child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(15),
-                                            child: Image.asset("assets/images/"+eventFuture![3].image!,fit:BoxFit.fill),
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            child: Image.asset(
+                                                "assets/images/" +
+                                                    eventFuture![3].image!,
+                                                fit: BoxFit.fill),
                                           ),
                                         ),
                                       ],
@@ -455,11 +568,11 @@ class _MyAppState extends State<MyApp> {
       child: Container(
           // margin: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
           child: ClipRRect(
-            child: Image.asset(
-              "assets/images/" + photo.image!,
-              fit: BoxFit.fill,
-            ),
-            borderRadius: BorderRadius.circular(15),
+        child: Image.asset(
+          "assets/images/" + photo.image!,
+          fit: BoxFit.fill,
+        ),
+        borderRadius: BorderRadius.circular(15),
         // child: Image.network(
         //   photo.image!,
         //   fit: BoxFit.fill,
@@ -468,39 +581,20 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  Future<List<SpecialOffers>> sendRequestSpecialOffers() async {
-    List<SpecialOffers> models = [];
+  Future<List<EventsModel>> sendRequestEvents() async {
+    List<EventsModel> models = [];
     /*
     dynamic response =await Dio().get("given api isn's working");
     for (var item in Response.data) {
-      models.add(SpecialOffers(item[0], item[1],item[2], item[3],item[4], item[5],));
+      models.add(SpecialOffers(item));
     }
     */
-    var response = [
-      [1, "گوشی شیائومی", 5000000, 4000000, 20, "box2.webp"],
-      [2, "ساعت", 1200000, 1000000, 18, "box3.webp"],
-      [3, "ایرپاد", 500000, 450000, 10, "box4.webp"],
-      [4, "گوشی موتورولا", 8000000, 6000000, 25, "box5.webp"],
-      [5, "کتونی ورزشی", 2000000, 1400000, 30, "box6.webp"],
-      [6, "هدفون", 437000, 355900, 19, "box7.webp"],
-      [7, "مک بوک", 42330000, 44100000, 4, "box8.webp"],
-      [8, "دوربین", 10769000, 12100000, 11, "box9.webp"],
-
-    ];
-    // DateTime.now().toPersianDateStr(strDay: true, strMonth: true,monthString: );
-    var value = NumberFormat("#,###.##", "en_US");
+    var response = ["event1.webp", "event2.webp", "event3.webp", "event4.webp"];
     for (int i = 0; i < response.length; i++) {
-      models.add(SpecialOffers(
-          response[i][0] as num,
-          response[i][1] as String,
-          response[i][2] as num,
-          response[i][3] as num,
-          response[i][4] as num,
-          response[i][5] as String));
+      models.add(EventsModel(response[i]));
     }
     return models;
   }
-
   Container showSpecialOffer(SpecialOffers specialoffer) {
     return Container(
       height: 220,
@@ -613,18 +707,40 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  Future<List<EventsModel>> sendRequestEvents() async {
-    List<EventsModel> models = [];
+
+  Future<List<SpecialOffers>> sendRequestSpecialOffers() async {
+    List<SpecialOffers> models = [];
     /*
     dynamic response =await Dio().get("given api isn's working");
     for (var item in Response.data) {
-      models.add(SpecialOffers(item));
+      models.add(SpecialOffers(item[0], item[1],item[2], item[3],item[4], item[5],));
     }
     */
-    var response = ["event1.webp", "event2.webp", "event3.webp", "event4.webp"];
+    var response = [
+      [1, "گوشی شیائومی", 5000000, 4000000, 20, "box2.webp",4.7],
+      [2, "ساعت", 1200000, 1000000, 18, "box3.webp",3.5],
+      [3, "ایرپاد", 500000, 450000, 10, "box4.webp",2.9],
+      [4, "گوشی موتورولا", 8000000, 6000000, 25, "box5.webp",4.2],
+      [5, "کتونی ورزشی", 2000000, 1400000, 30, "box6.webp",4.5],
+      [6, "هدفون", 437000, 355900, 19, "box7.webp",4],
+      [7, "مک بوک", 42330000, 44100000, 4, "box8.webp",3.6],
+      [8, "دوربین", 10769000, 12100000, 11, "box9.webp",3.9],
+    ];
+    // DateTime.now().toPersianDateStr(strDay: true, strMonth: true,monthString: );
+    var value = NumberFormat("#,###.##", "en_US");
     for (int i = 0; i < response.length; i++) {
-      models.add(EventsModel(response[i]));
+      models.add(SpecialOffers(
+          response[i][0] as num,
+          response[i][1] as String,
+          response[i][2] as num,
+          response[i][3] as num,
+          response[i][4] as num,
+          response[i][5] as String,
+          response[i][6] as num,
+          ));
     }
     return models;
   }
 }
+
+

@@ -5,6 +5,7 @@ class SpecialOffers {
   num? off_price;
   num? off_percent;
   String? image;
+  num? star;
   SpecialOffers(this.id, this.Product_name, this.price, this.off_price,
-      this.off_percent, this.image);
+      this.off_percent, this.image,this.star);
 }
