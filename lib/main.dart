@@ -4,36 +4,39 @@ import 'package:f1/Models/pageViewModel.dart';
 import 'package:f1/Models/specialOffers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' as intl;
 import 'package:progress_indicators/progress_indicators.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 import 'extra2.dart';
+import 'singleProduct.dart';
+import 'dart:math';
+
+
+
+
+
 
 void main() {
-  runApp(MyApp());
+  runApp(App());
 }
 
-// class MyApp extends StatefulWidget {
-//   const MyApp({super.key});
-//   @override
-//   State<MyApp> createState() => _MyAppState();
-// }
-// class _MyAppState extends State<MyApp> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       home: Scaffold(
-//         body: Column(
-//           children: [
-//             Image.network("https://www.digikala.com/product/dkp-12232341/%DA%AF%DB%8C%D9%88%D9%87-%D8%B2%D9%86%D8%A7%D9%86%D9%87-%D9%BE%D9%88%DB%8C%D8%A7%D9%86-%DA%AF%D8%A7%D9%85-%D9%BE%DB%8C%D8%A7%D9%85-%DA%A9%D8%AF-w10721/")
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
+class App extends StatefulWidget {
+  const App({super.key});
+
+  @override
+  State<App> createState() => _AppState();
+}
+class _AppState extends State<App> {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: MyApp(),
+      debugShowCheckedModeBanner: false,
+    );
+  }
+}
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -41,13 +44,13 @@ class MyApp extends StatefulWidget {
   @override
   State<MyApp> createState() => _MyAppState();
 }
-late Future<List<SpecialOffers>> specialOfferFuture;
+
 class _MyAppState extends State<MyApp> {
   late Future<List<PageViewModel>> pageViewFuture;
-  
+  late Future<List<SpecialOffers>> specialOfferFuture;
   late Future<List<EventsModel>> eventFuture;
   PageController pageController =
-      PageController(keepPage: true, initialPage: 5001, viewportFraction: 0.85);
+      PageController(keepPage: true, initialPage: 5001);
 
   @override
   void initState() {
@@ -71,9 +74,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
+    return Scaffold(
         bottomNavigationBar: BottomAppBar(
           color: Colors.red,
           shape: CircularNotchedRectangle(),
@@ -92,7 +93,7 @@ class _MyAppState extends State<MyApp> {
                         child: IconButton(
                             onPressed: () {},
                             icon: Icon(
-                              Icons.favorite_border,
+                              Icons.bookmark_border_outlined,
                               size: 30,
                               color: Colors.white,
                             )),
@@ -120,7 +121,7 @@ class _MyAppState extends State<MyApp> {
                         child: IconButton(
                             onPressed: () {},
                             icon: Icon(
-                              Icons.category_outlined,
+                              CupertinoIcons.rectangle_grid_2x2 ,
                               size: 30,
                               color: Colors.white,
                             )),
@@ -288,7 +289,7 @@ class _MyAppState extends State<MyApp> {
                           future: specialOfferFuture,
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
-                              List<SpecialOffers>? specialOfferFuture =
+                              List<SpecialOffers>? specialOfferFutureSnap =
                                   snapshot.data;
                               return ListView.builder(
                                   shrinkWrap: true,
@@ -297,7 +298,7 @@ class _MyAppState extends State<MyApp> {
                                       decelerationRate:
                                           ScrollDecelerationRate.fast),
                                   scrollDirection: Axis.horizontal,
-                                  itemCount: specialOfferFuture!.length + 1,
+                                  itemCount: specialOfferFutureSnap!.length + 1,
                                   itemBuilder: (context, position) {
                                     if (position == 0) {
                                       return Container(
@@ -329,7 +330,7 @@ class _MyAppState extends State<MyApp> {
                                                   Navigator.push(context,
                                                     MaterialPageRoute(
                                                         builder: (context) {
-                                                  return AllProducts();
+                                                  return AllProducts(specialOfferFuture);
                                                 }));
                                                 },
                                                 child: Row(
@@ -369,7 +370,7 @@ class _MyAppState extends State<MyApp> {
                                     } 
                                     else if (position <= 6 && position >= 1) {
                                       return showSpecialOffer(
-                                          specialOfferFuture[position - 1]);
+                                          specialOfferFutureSnap[position - 1]);
                                     } 
                                     else if (position == 7) {
                                       return Center(
@@ -378,7 +379,7 @@ class _MyAppState extends State<MyApp> {
                                               Navigator.push(context,
                                                   MaterialPageRoute(
                                                       builder: (context) {
-                                                return AllProducts();
+                                                return AllProducts(specialOfferFuture);
                                               }));
                                             },
                                             child: Row(
@@ -535,8 +536,8 @@ class _MyAppState extends State<MyApp> {
             ),
           ),
         ),
-      ),
-    );
+      );
+    
   }
 
   //methods
@@ -567,10 +568,10 @@ class _MyAppState extends State<MyApp> {
       padding: const EdgeInsets.only(bottom: 5, top: 5, left: 5, right: 5),
       child: Container(
           // margin: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-          child: ClipRRect(
+        child: ClipRRect(
         child: Image.asset(
           "assets/images/" + photo.image!,
-          fit: BoxFit.fill,
+          fit: BoxFit.fill , 
         ),
         borderRadius: BorderRadius.circular(15),
         // child: Image.network(
@@ -595,115 +596,131 @@ class _MyAppState extends State<MyApp> {
     }
     return models;
   }
-  Container showSpecialOffer(SpecialOffers specialoffer) {
-    return Container(
-      height: 220,
-      width: 140,
-      child: Card(
-          margin: EdgeInsets.only(top: 10, bottom: 10, left: 2.5, right: 2.5),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  "شگفت انگیز اختصاصی اپ",
-                  style: TextStyle(
-                      fontFamily: 'iranyekan',
-                      fontSize: 9,
-                      color: Colors.red,
-                      fontWeight: FontWeight.w700),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Image.asset(
-                  "assets/images/" + specialoffer.image!,
-                  width: 100,
-                  height: 100,
-                  fit: BoxFit.fill,
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  specialoffer.Product_name!,
-                  style: TextStyle(
-                      fontFamily: 'iranyekan',
-                      fontSize: 9,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w700),
-                ),
-                SizedBox(height: 15),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 1, right: 2),
-                      child: Image.asset(
-                        "assets/images/toman.png",
-                        width: 13,
-                        height: 13,
-                        fit: BoxFit.fill,
-                      ),
-                    ),
-                    Column(
-                      children: [
-                        Text(
-                          specialoffer.off_price!
-                              .toString()
-                              .toPersianDigit()
-                              .seRagham(),
-                          style: TextStyle(
-                              fontFamily: 'iranyekan',
-                              fontSize: 9,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w700),
-                        ),
-                        Text(
-                          specialoffer.price!
-                              .toString()
-                              .toPersianDigit()
-                              .seRagham(),
-                          style: TextStyle(
-                              fontFamily: 'iranyekan',
-                              fontSize: 9,
-                              color: Colors.black38,
-                              fontWeight: FontWeight.w100,
-                              decoration: TextDecoration.lineThrough),
-                        ),
-                      ],
-                    ),
-                    Spacer(),
-                    Container(
-                      decoration: BoxDecoration(
+  InkWell showSpecialOffer(SpecialOffers specialoffer) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(context , MaterialPageRoute(builder: (context) {
+          return SingleProduct(specialoffer);
+        }));
+      },
+      child: Container(
+        height: 220,
+        width: 140,
+        child: Card(
+            margin: EdgeInsets.only(top: 10, bottom: 10, left: 2.5, right: 2.5),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    "شگفت انگیز اختصاصی اپ",
+                    style: TextStyle(
+                        fontFamily: 'iranyekan',
+                        fontSize: 9,
                         color: Colors.red,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      width: 28,
-                      height: 15,
-                      child: Align(
-                        child: Text(
-                          specialoffer.off_percent!
-                                  .toString()
-                                  .toPersianDigit() +
-                              "%",
-                          style: TextStyle(
+                        fontWeight: FontWeight.w700),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Image.asset(
+                    "assets/images/" + specialoffer.image!,
+                    width: 100,
+                    height: 100,
+                    fit: BoxFit.fill,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    height: 35 ,
+                    child: Align(
+                      alignment: Alignment.topRight,
+                      child: Text(
+                        specialoffer.Product_name!,
+                        textDirection: TextDirection.rtl,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                        style: TextStyle(
                             fontFamily: 'iranyekan',
                             fontSize: 9,
-                            color: Colors.white,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 1, right: 2),
+                        child: Image.asset(
+                          "assets/images/toman.png",
+                          width: 13,
+                          height: 13,
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      Column(
+                        children: [
+                          Text(
+                            specialoffer.off_price!
+                                .toString()
+                                .toPersianDigit()
+                                .seRagham(),
+                            style: TextStyle(
+                                fontFamily: 'iranyekan',
+                                fontSize: 9,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w700),
+                          ),
+                          Text(
+                            specialoffer.price!
+                                .toString()
+                                .toPersianDigit()
+                                .seRagham(),
+                            style: TextStyle(
+                                fontFamily: 'iranyekan',
+                                fontSize: 9,
+                                color: Colors.black38,
+                                fontWeight: FontWeight.w100,
+                                decoration: TextDecoration.lineThrough),
+                          ),
+                        ],
+                      ),
+                      Spacer(),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        width: 28,
+                        height: 15,
+                        child: Align(
+                          child: Text(
+                            specialoffer.off_percent!
+                                    .toString()
+                                    .toPersianDigit() +
+                                "%",
+                            style: TextStyle(
+                              fontFamily: 'iranyekan',
+                              fontSize: 9,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(width: 10)
-                  ],
-                )
-              ],
-            ),
-          )),
+                      SizedBox(width: 10)
+                    ],
+                  )
+                ],
+              ),
+            )),
+      ),
     );
   }
 
@@ -716,18 +733,19 @@ class _MyAppState extends State<MyApp> {
       models.add(SpecialOffers(item[0], item[1],item[2], item[3],item[4], item[5],));
     }
     */
+    
     var response = [
-      [1, "گوشی شیائومی", 5000000, 4000000, 20, "box2.webp",4.7],
-      [2, "ساعت", 1200000, 1000000, 18, "box3.webp",3.5],
-      [3, "ایرپاد", 500000, 450000, 10, "box4.webp",2.9],
-      [4, "گوشی موتورولا", 8000000, 6000000, 25, "box5.webp",4.2],
-      [5, "کتونی ورزشی", 2000000, 1400000, 30, "box6.webp",4.5],
-      [6, "هدفون", 437000, 355900, 19, "box7.webp",4],
-      [7, "مک بوک", 42330000, 44100000, 4, "box8.webp",3.6],
-      [8, "دوربین", 10769000, 12100000, 11, "box9.webp",3.9],
+      [1, "گوشی موبایل شیائومی مدل Redmi Note 12 4G دو سیم کارت ظرفیت 128 گیگابایت و رم 8 گیگابایت - گلوبال", 5000000, 4000000, 20, "box2.webp",4.7,"موبایل و تلفن همراه"],
+      [2, "ساعت هوشمند سامسونگ مدل Galaxy Watch5 Ultra", 1200000, 1000000, 18, "box3.webp",3.5,"ساعت هوشمند"],
+      [3, "ایرپاد", 500000, 450000, 10, "box4.webp",2.9,"هدفون و هنذزفری"],
+      [4, "گوشی موتورولا", 8000000, 6000000, 25, "box5.webp",4.2,"موبایل و تلفن همراه"],
+      [5, "کتونی ورزشی", 2000000, 1400000, 30, "box6.webp",4.5,"پوشاک"],
+      [6, "هدفون", 437000, 355900, 19, "box7.webp",4,"هدفون و هندزفری"],
+      [7, "لپ تاپ 13.3 اینچی اپل مدل MacBook Air MGN63 2020 LLA", 42330000, 44100000, 4, "box8.webp",3.6,"کامپیوتر و لپ تاپ"],
+      [8, "دوربین", 10769000, 12100000, 11, "box9.webp",3.9,"ابزار و وسایل"],
     ];
     // DateTime.now().toPersianDateStr(strDay: true, strMonth: true,monthString: );
-    var value = NumberFormat("#,###.##", "en_US");
+    var value = intl.NumberFormat("#,###.##", "en_US");
     for (int i = 0; i < response.length; i++) {
       models.add(SpecialOffers(
           response[i][0] as num,
@@ -737,6 +755,7 @@ class _MyAppState extends State<MyApp> {
           response[i][4] as num,
           response[i][5] as String,
           response[i][6] as num,
+          response[i][7] as String,
           ));
     }
     return models;
