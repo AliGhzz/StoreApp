@@ -1,13 +1,16 @@
 import 'package:f1/Models/specialOffers.dart';
+import 'package:f1/extra2.dart';
+import 'package:f1/shoppingcart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'dart:math';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'main.dart';
 
 class SingleProduct extends StatelessWidget {
   SpecialOffers specialoffer;
-
   SingleProduct(this.specialoffer);
   final controller = PageController(viewportFraction: 1, keepPage: true);
   int colorCount = Random().nextInt(9) + 1;
@@ -23,6 +26,18 @@ class SingleProduct extends StatelessWidget {
     [Colors.purple, false, "بنفش"]
   ];
   int satisfacation_percentage = Random().nextInt(80) + 20;
+
+  void addToCart(SpecialOffers specialOffer) {
+    if (order.containsKey(specialoffer)) {
+      order[specialoffer] = order[specialoffer]! + 1;
+    } else {
+      order[specialoffer] = 1;
+    }
+    basket = [];
+    order.forEach((key, value) {
+      basket.add([key,value]);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +131,9 @@ class SingleProduct extends StatelessWidget {
                   height: 40,
                   width: 140,
                   child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        addToCart(specialoffer);
+                      },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.red,
                           padding: EdgeInsets.all(5),
@@ -149,7 +166,12 @@ class SingleProduct extends StatelessWidget {
           centerTitle: true,
           actions: [
             IconButton(
-                onPressed: () {}, icon: Icon(Icons.shopping_cart_outlined)),
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return sCart();
+                  }));
+                },
+                icon: Icon(Icons.shopping_cart_outlined)),
             IconButton(
                 onPressed: () {}, icon: Icon(Icons.bookmark_add_outlined)),
             IconButton(onPressed: () {}, icon: Icon(Icons.more_vert)),
@@ -410,7 +432,7 @@ class SingleProduct extends StatelessWidget {
                   child: Column(
                     children: [
                       InkWell(
-                        onTap: (){},
+                        onTap: () {},
                         child: Container(
                             height: 45,
                             width: double.infinity,
@@ -418,36 +440,45 @@ class SingleProduct extends StatelessWidget {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                Icon(Icons.navigate_before,color: Colors.black38 ,),
-                                Spacer(), 
+                                Icon(
+                                  Icons.navigate_before,
+                                  color: Colors.black38,
+                                ),
+                                Spacer(),
                                 Column(
-                                  crossAxisAlignment:CrossAxisAlignment.end ,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
-                                    
                                     Text("دیجی کالا",
                                         style: TextStyle(
                                             fontFamily: 'iranyekan',
                                             fontSize: 12,
                                             color: Colors.black,
-                                            fontWeight: FontWeight.w200,letterSpacing:0,wordSpacing:0)),
+                                            fontWeight: FontWeight.w200,
+                                            letterSpacing: 0,
+                                            wordSpacing: 0)),
                                     Row(
                                       children: [
                                         selectColor(satisfacation_percentage),
                                         Text("عملکرد",
-                                        style: TextStyle(
-                                            fontFamily: 'iranyekan',
-                                            fontSize: 10,
-                                            color: Colors.black38,
-                                            fontWeight: FontWeight.w200)),
+                                            style: TextStyle(
+                                                fontFamily: 'iranyekan',
+                                                fontSize: 10,
+                                                color: Colors.black38,
+                                                fontWeight: FontWeight.w200)),
                                       ],
-                                    ), 
+                                    ),
                                   ],
                                 ),
-                                SizedBox(width: 5,), 
-                                Icon(Icons.store_mall_directory_outlined,size: 24,color: Colors.red,),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Icon(
+                                  Icons.store_mall_directory_outlined,
+                                  size: 24,
+                                  color: Colors.red,
+                                ),
                               ],
-                            )
-                          ),
+                            )),
                       ),
                       Divider(
                         endIndent: 29,
@@ -460,17 +491,25 @@ class SingleProduct extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Text(" گارانتی "+"18".toPersianDigit()+" ماهه دیجی کالا"
-                                        ,style: TextStyle( 
-                                            fontFamily: 'iranyekan',
-                                            fontSize: 12, 
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w200,
-                                            letterSpacing:0,wordSpacing:0
-                                            ),
-                                          ),
-                            SizedBox(width: 5,), 
-                            Icon(CupertinoIcons.checkmark_shield,color: Colors.blue ,)
+                            Text(
+                              " گارانتی " +
+                                  "18".toPersianDigit() +
+                                  " ماهه دیجی کالا",
+                              style: TextStyle(
+                                  fontFamily: 'iranyekan',
+                                  fontSize: 12,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w200,
+                                  letterSpacing: 0,
+                                  wordSpacing: 0),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Icon(
+                              CupertinoIcons.checkmark_shield,
+                              color: Colors.blue,
+                            )
                           ],
                         ),
                       ),
@@ -485,17 +524,23 @@ class SingleProduct extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Text("موجود در انبار دیجی کالا"
-                                        ,style: TextStyle( 
-                                            fontFamily: 'iranyekan',
-                                            fontSize: 12, 
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w200,
-                                            letterSpacing:0,wordSpacing:0
-                                            ),
-                                          ), 
-                            SizedBox(width: 5,), 
-                            Icon(Icons.warehouse_outlined ,color: Colors.green,)
+                            Text(
+                              "موجود در انبار دیجی کالا",
+                              style: TextStyle(
+                                  fontFamily: 'iranyekan',
+                                  fontSize: 12,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w200,
+                                  letterSpacing: 0,
+                                  wordSpacing: 0),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Icon(
+                              Icons.warehouse_outlined,
+                              color: Colors.green,
+                            )
                           ],
                         ),
                       ),
@@ -506,7 +551,7 @@ class SingleProduct extends StatelessWidget {
                       ),
                     ],
                   ),
-                  )
+                )
               ],
             ),
           ),
@@ -515,28 +560,40 @@ class SingleProduct extends StatelessWidget {
 
   Text selectColor(satisfacation_percentage) {
     if (satisfacation_percentage >= 85) {
-      return Text(        
-            "عالی",
-            style: TextStyle(color: Colors.green,fontFamily: 'iranyekan',
-                                      fontSize: 10,),
+      return Text(
+        "عالی",
+        style: TextStyle(
+          color: Colors.green,
+          fontFamily: 'iranyekan',
+          fontSize: 10,
+        ),
       );
     } else if (satisfacation_percentage >= 65) {
       return Text(
-            "خوب",
-            style: TextStyle(color: Colors.greenAccent,fontFamily: 'iranyekan',
-                                      fontSize: 10,),
+        "خوب",
+        style: TextStyle(
+          color: Colors.greenAccent,
+          fontFamily: 'iranyekan',
+          fontSize: 10,
+        ),
       );
     } else if (satisfacation_percentage >= 45) {
       return Text(
-            "معمولی",
-            style: TextStyle(color: Colors.yellow,fontFamily: 'iranyekan',
-                                      fontSize: 10,),
+        "معمولی",
+        style: TextStyle(
+          color: Colors.yellow,
+          fontFamily: 'iranyekan',
+          fontSize: 10,
+        ),
       );
     } else {
       return Text(
-            "ضعیف",
-            style: TextStyle(color: Colors.orange,fontFamily: 'iranyekan',
-                                      fontSize: 10,),
+        "ضعیف",
+        style: TextStyle(
+          color: Colors.orange,
+          fontFamily: 'iranyekan',
+          fontSize: 10,
+        ),
       );
     }
   }

@@ -1,3 +1,4 @@
+import 'package:f1/shoppingcart.dart';
 import 'package:flutter/cupertino.dart';
 import 'singleProduct.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,6 @@ class AllProducts extends StatefulWidget {
 }
 
 class _AllProductsState extends State<AllProducts> {
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +26,12 @@ class _AllProductsState extends State<AllProducts> {
           centerTitle: true,
           actions: [
             IconButton(
-                onPressed: () {}, icon: Icon(Icons.shopping_cart_outlined))
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return sCart();
+                  }));
+                },
+                icon: Icon(Icons.shopping_cart_outlined))
           ],
           elevation: 0,
         ),
@@ -84,13 +89,20 @@ class _AllProductsState extends State<AllProducts> {
                       indent: 10,
                     ),
                     GridView.builder(
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 1,
-                                crossAxisSpacing: 2,
-                                mainAxisSpacing: 2,
-                                mainAxisExtent: 155),
+                        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                          maxCrossAxisExtent: 610,
+                          mainAxisSpacing: 2,
+                          crossAxisSpacing: 2,
+                          mainAxisExtent: 155,
+                          childAspectRatio: 2,
+                        ),
+                        // const SliverGridDelegateWithFixedCrossAxisCount(
+                        //     crossAxisCount: 1,
+                        //     crossAxisSpacing: 2,
+                        //     mainAxisSpacing: 2,
+                        //     mainAxisExtent: 155),
                         shrinkWrap: true,
+                        physics: ScrollPhysics(),
                         itemBuilder: (context, index) {
                           return showSpecialOfferGridView(
                               specialOfferFuture![index]);
@@ -132,7 +144,7 @@ class _AllProductsState extends State<AllProducts> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.only(
-                    top: 15, right: 20, left: 10, bottom: 10),
+                    top: 15, right:5, left: 10, bottom: 10),
                 child: Column(
                   children: [
                     Container(
@@ -196,7 +208,11 @@ class _AllProductsState extends State<AllProducts> {
                             SizedBox(
                               width: 5,
                             ),
-                            Icon(CupertinoIcons.gift,size: 15,color: Colors.purple ,),
+                            Icon(
+                              CupertinoIcons.gift,
+                              size: 15,
+                              color: Colors.purple,
+                            ),
                             // Image.asset(
                             //   "assets/images/cash.png",
                             //   height: 15,
@@ -273,40 +289,18 @@ class _AllProductsState extends State<AllProducts> {
                         ),
                       ],
                     ),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //   children: [
-                    //     ElevatedButton(
-                    //       onPressed: (){},
-                    //       style: ElevatedButton.styleFrom(
-                    //         backgroundColor: Colors.red,
-                    //         padding:EdgeInsets.all(5),
-                    //       ),
-                    //       child: Row(
-                    //         // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //         children: [
-                    //           Icon(Icons.add_shopping_cart,size:20,),
-                    //           Text(" افزودن به سبد خرید",style: TextStyle(
-                    //                 fontFamily: 'iranyekan',
-                    //                 fontSize: 9,
-                    //                 color: Colors.white,
-                    //                 fontWeight: FontWeight.w700
-                    //                 )
-                    //           )
-                    //         ],
-                    //       )
-                    //     )
-                    //   ],
-                    // )
                   ],
                 ),
               ),
             ),
-            Image.asset(
-              "assets/images/" + specialoffer.image!,
-              width: 125,
-              height: 125,
-              fit: BoxFit.fill,
+            Padding(
+              padding: const EdgeInsets.only(right:5),
+              child: Image.asset(
+                "assets/images/" + specialoffer.image!,
+                width: 110,
+                height: 110,
+                fit: BoxFit.fill,
+              ),
             ),
           ],
         ),
