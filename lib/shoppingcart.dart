@@ -1,11 +1,14 @@
 import 'dart:async';
-
+import 'package:f1/maps.dart';
 import 'package:f1/singleProduct.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 import 'Models/specialOffers.dart';
 import 'main.dart';
+
+// import 'singleProduct.dart';
+StreamController<List>? baskets;
 
 class sCart extends StatefulWidget {
   const sCart({super.key});
@@ -14,12 +17,25 @@ class sCart extends StatefulWidget {
 }
 
 class _sCartState extends State<sCart> {
-  StreamController<List>? baskets;
   @override
   void initState() {
     super.initState();
     baskets = StreamController<List>();
   }
+
+  // void addToCart(SpecialOffers specialoffer, [int n = 1]) {
+    // if (order.containsKey(specialoffer)) {
+    //   order[specialoffer] = order[specialoffer]! + n;
+    // } else {
+    //   order[specialoffer] = n;
+    // }
+    // specialoffer.count += 1;
+    // basket.add(specialoffer);
+
+    // order.forEach((key, value) {
+    //   basket.add([key, value]);
+    // });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -31,10 +47,63 @@ class _sCartState extends State<sCart> {
         title: Text("DigiKala"),
         centerTitle: true,
         elevation: 0,
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return GoogleMaps();
+                }));
+              },
+              icon: Icon(Icons.location_on_outlined)),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
-          children: [ 
+          children: [
+            checkCartIsNotEmpty(basket),
+            Container(
+              child: StreamBuilder<List>(
+                  stream: baskets!.stream,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      List? lst = snapshot.data;
+                      return GridView.builder(
+                        itemCount: lst!.length,
+                        scrollDirection: Axis.vertical,
+                        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                          maxCrossAxisExtent: 600,
+                          mainAxisSpacing: 2,
+                          crossAxisSpacing: 2,
+                          mainAxisExtent: 235,
+                          childAspectRatio: 2,
+                        ),
+                        shrinkWrap: true,
+                        physics: ScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return showSpecialOfferGridView(
+                              lst[index][0], lst[index][1], index);
+                        },
+                      );
+                    } else {
+                      return Container(
+                        height: 100,
+                        width: 100,
+                        color: Colors.black,
+                      );
+                    }
+                  }),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Container checkCartIsNotEmpty(basket) {
+    if (basket.length == 0) {
+      return Container(
+        child: Column(
+          children: [
             Container(
               width: double.infinity,
               height: 40,
@@ -69,54 +138,62 @@ class _sCartState extends State<sCart> {
                 ),
               ),
             ),
-            Container(
-              child: StreamBuilder<List>(
-                  stream: baskets!.stream,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      List? lst = snapshot.data;
-                      return GridView.builder(
-                          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                            maxCrossAxisExtent: 600,
-                            mainAxisSpacing: 2,
-                            crossAxisSpacing: 2,
-                            mainAxisExtent: 235,
-                            childAspectRatio: 2,
-                          ),
-                          shrinkWrap: true,
-                          physics: ScrollPhysics(),
-                          itemBuilder: (context, index) {
-                            if (lst.length == 0) {
-                              return Center(
-                                  child: Text(
-                                "سبد خرید شما خالی است",
-                                style: TextStyle(
-                                    fontFamily: 'iranyekan',
-                                    fontSize: 12,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w600),
-                              ));
-                            } else if (index < lst.length) {
-                              return showSpecialOfferGridView(
-                                  lst[index][0], lst[index][1], index);
-                            }
-                          },
-                          itemCount: lst!.length,
-                          scrollDirection: Axis.vertical);
-                    } else {
-                      return Container(
-                        height: 100,
-                        width: 100,
-                        color: Colors.black,
-                      );
-                    }
-                  }
+            Padding(
+              padding: const EdgeInsets.only(top: 100),
+              child: Center(
+                child: Text(
+                  "سبد خرید شما خالی است",
+                  style: TextStyle(
+                      fontFamily: 'iranyekan',
+                      fontSize: 15,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w600),
                 ),
-            )
+              ),
+            ),
           ],
         ),
-      ),
-    );
+      );
+    } else {
+      num x = 0;
+      for (int i = 0; i < basket.length; i++) {
+        x += basket[i][1];
+      }
+      return Container(
+        width: double.infinity,
+        height: 40,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 5, left: 10, right: 10),
+          child: Row(
+            children: [
+              Text(
+                "کالا ",
+                style: TextStyle(
+                    fontFamily: 'iranyekan',
+                    fontSize: 11,
+                    color: Colors.black45,
+                    fontWeight: FontWeight.w100),
+              ),
+              Text(
+                (x).toString().toPersianDigit().seRagham(),
+                style: TextStyle(
+                    fontFamily: 'iranyekan',
+                    fontSize: 11,
+                    color: Colors.black45,
+                    fontWeight: FontWeight.w100),
+              ),
+              Spacer(),
+              Text("لیست کالاهای سبد خرید ",
+                  style: TextStyle(
+                      fontFamily: 'iranyekan',
+                      fontSize: 13,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w500))
+            ],
+          ),
+        ),
+      );
+    }
   }
 
   Column showSpecialOfferGridView(
@@ -124,7 +201,7 @@ class _sCartState extends State<sCart> {
     return Column(
       children: [
         Container(
-          color:Colors.white,
+          color: Colors.white,
           child: Padding(
             padding:
                 const EdgeInsets.only(top: 10, left: 10, right: 5, bottom: 5),
@@ -135,6 +212,7 @@ class _sCartState extends State<sCart> {
                   child: Padding(
                     padding: const EdgeInsets.only(right: 5),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Container(
                           height: 40,
@@ -293,20 +371,20 @@ class _sCartState extends State<sCart> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Text(
-                            ((specialoffer.price! / 115).round())
-                                    .toString()
-                                    .toPersianDigit()
-                                    .seRagham() +
-                                " هدیه نقدی",
-                            textDirection: TextDirection.rtl,
-                            style: TextStyle(
-                                fontFamily: 'iranyekan',
-                                fontSize: 10,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w200,
-                                letterSpacing: 0,
-                                wordSpacing: 0),
-                          ),
+                              ((specialoffer.price! / 115).round())
+                                      .toString()
+                                      .toPersianDigit()
+                                      .seRagham() +
+                                  " هدیه نقدی",
+                              textDirection: TextDirection.rtl,
+                              style: TextStyle(
+                                  fontFamily: 'iranyekan',
+                                  fontSize: 10,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w200,
+                                  letterSpacing: 0,
+                                  wordSpacing: 0),
+                            ),
                             SizedBox(
                               width: 5,
                             ),
@@ -322,8 +400,9 @@ class _sCartState extends State<sCart> {
                   ),
                 ),
                 InkWell(
-                  onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
                       return SingleProduct(specialoffer);
                     }));
                   },
@@ -342,7 +421,7 @@ class _sCartState extends State<sCart> {
           child: Padding(
             padding: const EdgeInsets.only(right: 10),
             child: Container(
-              color:Colors.white,
+              color: Colors.white,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -352,41 +431,50 @@ class _sCartState extends State<sCart> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Text(((specialoffer.price!-specialoffer.off_price!)*count).toString().toPersianDigit().seRagham()+" تومان تخفیف",
+                        Text(
+                          ((specialoffer.price! - specialoffer.off_price!) *
+                                      count)
+                                  .toString()
+                                  .toPersianDigit()
+                                  .seRagham() +
+                              " تومان تخفیف",
                           style: TextStyle(
-                                    fontFamily: 'iranyekan',
-                                    fontSize: 10,
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                            textDirection: TextDirection.rtl,
+                            fontFamily: 'iranyekan',
+                            fontSize: 10,
+                            color: Colors.red,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          textDirection: TextDirection.rtl,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(top: 1, right: 2),
-                                child: Image.asset(
-                                  "assets/images/toman.png",
-                                  width: 13,
-                                  height: 13,
-                                  fit: BoxFit.fill,
-                                ),
+                              child: Image.asset(
+                                "assets/images/toman.png",
+                                width: 13,
+                                height: 13,
+                                fit: BoxFit.fill,
                               ),
-                              Text(((specialoffer.off_price!)*count).toString().toPersianDigit().seRagham(),
-                              style: TextStyle(
-                                    fontFamily: 'iranyekan',
-                                    fontSize: 12,
-                                    color: Colors.black,
-                                  ),
                             ),
-                            
+                            Text(
+                              ((specialoffer.off_price!) * count)
+                                  .toString()
+                                  .toPersianDigit()
+                                  .seRagham(),
+                              style: TextStyle(
+                                fontFamily: 'iranyekan',
+                                fontSize: 12,
+                                color: Colors.black,
+                              ),
+                            ),
                           ],
                         )
                       ],
                     ),
                   ),
-                  SizedBox(width:10),
+                  SizedBox(width: 10),
                   Container(
                     width: 105,
                     height: 40,
@@ -394,7 +482,7 @@ class _sCartState extends State<sCart> {
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(color: Colors.grey, width: 0.5)),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         showIcon(count, index),
                         Text(
@@ -408,18 +496,19 @@ class _sCartState extends State<sCart> {
                         IconButton(
                             onPressed: () {
                               setState(() {
-                                if (count<=9){
+                                if (count <= 9) {
                                   basket[index][1] += 1;
                                   count += 1;
+                                  // order[basket[index][0]] = count;
+                                  addToCart(basket[index][0]);
                                 }
-                                
                               });
                             },
                             icon: Icon(
                               CupertinoIcons.add,
                               color: Colors.red,
                               size: 24,
-                            )) 
+                            ))
                       ],
                     ),
                   ),
@@ -439,6 +528,8 @@ class _sCartState extends State<sCart> {
           setState(() {
             basket[index][1] -= 1;
             count -= 1;
+            // order[basket[index][0]] = count;
+            addToCart(basket[index][0], -1);
           });
         },
         icon: Icon(
@@ -450,15 +541,18 @@ class _sCartState extends State<sCart> {
       return IconButton(
         onPressed: () {
           setState(() {
-            if (count != 0) {
-              basket[index][1] -= 1;
-              count -= 1;
-            }
-            if (count == 0) {
-              order.remove(basket[index][0]);
-              basket.removeAt(index);
-              baskets!.add(basket);
-            }
+            // if (count != 0) {
+            // basket[index][1] -= 1;
+            count -= 1;
+            // order[basket[index][0]] = count;
+            // addToCart(basket[index][0],-1);
+            // }
+            // if (count == 0) {
+            basket[index][0].isAdded = false;
+            order.remove(basket[index][0]);
+            basket.removeAt(index);
+            baskets!.add(basket);
+            // }
           });
         },
         icon: Icon(

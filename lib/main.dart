@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:f1/Models/eventModel.dart';
 import 'package:f1/Models/pageViewModel.dart';
 import 'package:f1/Models/specialOffers.dart';
-import 'package:f1/maps.dart';
 import 'package:f1/shoppingcart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,11 +12,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 import 'extra2.dart';
 import 'singleProduct.dart';
-import 'dart:math';
 
-Map<SpecialOffers,int>order ={};
-int x = 0;
 List basket = [];
+Map<SpecialOffers, int> order = {};
+
 void main() {
   runApp(App());
 }
@@ -115,7 +113,7 @@ class _MyAppState extends State<MyApp> {
               Container(
                 width: MediaQuery.of(context).size.width * 0.5 - 15,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(bottom: 5),
@@ -157,13 +155,6 @@ class _MyAppState extends State<MyApp> {
         title: Text("DigiKala"),
         centerTitle: true,
         actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return GoogleMaps();
-                }));
-              },
-              icon: Icon(Icons.location_on_outlined)),
           IconButton(
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -568,19 +559,22 @@ class _MyAppState extends State<MyApp> {
   Padding showPageView(PageViewModel photo) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 5, top: 5, left: 5, right: 5),
-      child: Container(
-          // margin: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-          child: ClipRRect(
-        child: Image.asset(
-          "assets/images/" + photo.image!,
-          fit: BoxFit.fill,
-        ),
-        borderRadius: BorderRadius.circular(15),
-        // child: Image.network(
-        //   photo.image!,
-        //   fit: BoxFit.fill,
-        // ),
-      )),
+      child: AspectRatio(
+        aspectRatio: 1.0 / 1.0,
+        child: Container(
+            // margin: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+            child: ClipRRect(
+          child: Image.asset(
+            "assets/images/" + photo.image!,
+            fit: BoxFit.fill,
+          ),
+          borderRadius: BorderRadius.circular(15),
+          // child: Image.network(
+          //   photo.image!,
+          //   fit: BoxFit.fill,
+          // ),
+        )),
+      ),
     );
   }
 

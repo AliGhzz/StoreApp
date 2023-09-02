@@ -7,6 +7,8 @@ class SpecialOffers {
   String? image;
   num? star;
   String? category;
+  bool isAdded = false;
+  int count = 0;
   SpecialOffers(this.id, this.Product_name, this.price, this.off_price,
-      this.off_percent, this.image, this.star,this.category);
+      this.off_percent, this.image, this.star, this.category);
 }

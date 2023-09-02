@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:f1/Models/specialOffers.dart';
 import 'package:f1/extra2.dart';
 import 'package:f1/shoppingcart.dart';
@@ -8,12 +10,289 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'dart:math';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'main.dart';
+import 'shoppingcart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class SingleProduct extends StatelessWidget {
-  SpecialOffers specialoffer;
-  SingleProduct(this.specialoffer);
+class AddToCart extends StatefulWidget {
+  // const AddToCart({super.key});
+  SpecialOffers specialOffer;
+  AddToCart(this.specialOffer);
+
+  @override
+  State<AddToCart> createState() => _AddToCartState();
+}
+void addToCart(SpecialOffers specialoffer, [int n = 1]) {
+    if (order.containsKey(specialoffer)) {
+      order[specialoffer] = order[specialoffer]! + n;
+      specialoffer.count += 1;
+    } else {
+      order[specialoffer] = n;
+      specialoffer.count += 1;
+    }
+    basket = [];
+    order.forEach((key, value) {
+      basket.add([key, value]);
+    });
+  }
+class _AddToCartState extends State<AddToCart> {
+  
+
+  // Container addToCartButton(specialoffer) {
+  //   if (specialoffer.isAdded == false) {
+  //     return Container(
+  //       height: 40,
+  //       width: 140,
+  //       child: ElevatedButton(
+  //           onPressed: () {
+  //             setState(() {
+  //               specialoffer.isAdded = true;
+  //               addToCart(specialoffer);
+  //             });
+  //           },
+  //           style: ElevatedButton.styleFrom(
+  //               backgroundColor: Colors.red,
+  //               padding: EdgeInsets.all(5),
+  //               shape: RoundedRectangleBorder(
+  //                   borderRadius: BorderRadius.circular(5))),
+  //           child: Row(
+  //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //             children: [
+  //               Icon(
+  //                 Icons.add_shopping_cart,
+  //                 size: 20,
+  //               ),
+  //               Text(" افزودن به سبد خرید",
+  //                   style: TextStyle(
+  //                       fontFamily: 'iranyekan',
+  //                       fontSize: 12,
+  //                       color: Colors.white,
+  //                       fontWeight: FontWeight.w700))
+  //             ],
+  //           )),
+  //     );
+  //   } else {
+  //     return Container(
+  //       width: 140,
+  //       height: 40,
+  //       decoration: BoxDecoration(
+  //           borderRadius: BorderRadius.circular(8),
+  //           border: Border.all(color: Colors.grey, width: 0.5)),
+  //       child: Row(
+  //         mainAxisAlignment: MainAxisAlignment.center,
+  //         children: [
+  //           showIcon(specialoffer),
+  //           Text(
+  //             order[specialoffer]!.toString().toPersianDigit(),
+  //             style: TextStyle(
+  //               fontFamily: 'iranyekan',
+  //               fontSize: 18,
+  //               color: Colors.red,
+  //             ),
+  //           ),
+  //           IconButton(
+  //               onPressed: () {
+  //                 setState(() {
+  //                   if ( order[specialoffer]==null || order[specialoffer]! <= 9 ) {
+  //                     // order[specialoffer] = order[specialoffer]! + 1;
+  //                     addToCart(specialoffer);
+  //                   }
+  //                 });
+  //               },
+  //               icon: Icon(
+  //                 CupertinoIcons.add,
+  //                 color: Colors.red,
+  //                 size: 24,
+  //               ))
+  //         ],
+  //       ),
+  //     );
+  //   }
+  // }
+
+  // IconButton showIcon(specialoffers) {
+  //   if (order[specialoffers]! >= 2) {
+  //     return IconButton(
+  //       onPressed: () {
+  //         setState(() {
+  //           // order[specialoffers] = order[specialoffers]! - 1;
+  //           addToCart(specialoffers, -1);
+  //         });
+  //       },
+  //       icon: Icon(
+  //         Icons.remove,
+  //         color: Colors.red,
+  //       ),
+  //     );
+  //   } else {
+  //     return IconButton(
+  //       onPressed: () {
+  //         setState(() {
+  //           // if (order[specialoffers] == 1) {
+  //           // order[specialoffers] = order[specialoffers]! - 1;
+  //           // addToCart(specialoffers, -1);
+  //           // for (int i = 0; i < basket.length; i++) {
+  //           //   if (basket[i][0] == specialoffers) {
+  //           //     basket[i][1] == basket[i][1] - 1;
+  //           //   }
+  //           // }
+  //           // }
+  //           // if (order[specialoffers] == 0) {
+  //           order.remove(specialoffers);
+  //           specialoffers.isAdded = false;
+  //           for (int i = 0; i < basket.length; i++) {
+  //             if (basket[i][0] == specialoffers) {
+  //               basket.removeAt(i);
+  //             }
+  //           }
+  //         });
+  //       },
+  //       icon: Icon(
+  //         CupertinoIcons.delete,
+  //         color: Colors.red,
+  //         size: 20,
+  //       ),
+  //     );
+  //   }
+  // }
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomAppBar(
+      height: 60,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 15, right: 15),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 9,
+                ),
+                Row(
+                  children: [
+                    Text(
+                      widget.specialOffer.price
+                          .toString()
+                          .toPersianDigit()
+                          .seRagham(),
+                      style: TextStyle(
+                          fontFamily: 'iranyekan',
+                          fontSize: 11,
+                          color: Colors.black54,
+                          fontWeight: FontWeight.w100,
+                          decoration: TextDecoration.lineThrough),
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      width: 35,
+                      height: 20,
+                      child: Align(
+                        alignment: Alignment.topCenter,
+                        child: Text(
+                          widget.specialOffer.off_percent!
+                                  .toString()
+                                  .toPersianDigit() +
+                              "%",
+                          style: TextStyle(
+                            fontFamily: 'iranyekan',
+                            fontSize: 11,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Container(
+                      child: Image.asset(
+                        "assets/images/toman.png",
+                        width: 14,
+                        height: 14,
+                        fit: BoxFit.contain,
+                        color: Colors.black,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      widget.specialOffer.off_price!
+                          .toString()
+                          .toPersianDigit()
+                          .seRagham(),
+                      style: TextStyle(
+                        fontFamily: 'iranyekan',
+                        fontSize: 15,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            // addToCartButton(widget.specialOffer)
+            Container(
+              height: 40,
+              width: 140,
+              child: ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      widget.specialOffer.isAdded = true;
+                      addToCart(widget.specialOffer);
+                    });
+                  },
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                      padding: EdgeInsets.all(5),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5))),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Icon(
+                        Icons.add_shopping_cart,
+                        size: 20,
+                      ),
+                      Text(" افزودن به سبد خرید",
+                          style: TextStyle(
+                              fontFamily: 'iranyekan',
+                              fontSize: 12,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700))
+                    ],
+                  )),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ignore: must_be_immutable
+class SingleProduct extends StatefulWidget {
+  SpecialOffers specialOffer;
+  SingleProduct(this.specialOffer);
+
+  @override
+  State<SingleProduct> createState() => _SingleProductState();
+}
+
+class _SingleProductState extends State<SingleProduct> {
   final controller = PageController(viewportFraction: 1, keepPage: true);
+
   int colorCount = Random().nextInt(9) + 1;
+
   var allcolors = [
     [Colors.red, false, "قرمز"],
     [Colors.blue, false, "آبی"],
@@ -25,140 +304,17 @@ class SingleProduct extends StatelessWidget {
     [Colors.orange, false, "نارنجی"],
     [Colors.purple, false, "بنفش"]
   ];
+
   int satisfacation_percentage = Random().nextInt(80) + 20;
 
-  void addToCart(SpecialOffers specialOffer) {
-    if (order.containsKey(specialoffer)) {
-      order[specialoffer] = order[specialoffer]! + 1;
-    } else {
-      order[specialoffer] = 1;
-    }
-    basket = [];
-    order.forEach((key, value) {
-      basket.add([key,value]);
-    });
+  Future<void> saveData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        bottomNavigationBar: BottomAppBar(
-          height: 60,
-          // color: Colors.amber,
-          // color: Colors.white ,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 15, right: 15),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: 9,
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          specialoffer.price
-                              .toString()
-                              .toPersianDigit()
-                              .seRagham(),
-                          style: TextStyle(
-                              fontFamily: 'iranyekan',
-                              fontSize: 11,
-                              color: Colors.black54,
-                              fontWeight: FontWeight.w100,
-                              decoration: TextDecoration.lineThrough),
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.red,
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          width: 35,
-                          height: 20,
-                          child: Align(
-                            alignment: Alignment.topCenter,
-                            child: Text(
-                              specialoffer.off_percent!
-                                      .toString()
-                                      .toPersianDigit() +
-                                  "%",
-                              style: TextStyle(
-                                fontFamily: 'iranyekan',
-                                fontSize: 11,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Container(
-                          child: Image.asset(
-                            "assets/images/toman.png",
-                            width: 14,
-                            height: 14,
-                            fit: BoxFit.contain,
-                            color: Colors.black,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Text(
-                          specialoffer.off_price!
-                              .toString()
-                              .toPersianDigit()
-                              .seRagham(),
-                          style: TextStyle(
-                            fontFamily: 'iranyekan',
-                            fontSize: 15,
-                            color: Colors.black,
-                          ),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-                Container(
-                  height: 40,
-                  width: 140,
-                  child: ElevatedButton(
-                      onPressed: () {
-                        addToCart(specialoffer);
-                      },
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red,
-                          padding: EdgeInsets.all(5),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5))),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Icon(
-                            Icons.add_shopping_cart,
-                            size: 20,
-                          ),
-                          Text(" افزودن به سبد خرید",
-                              style: TextStyle(
-                                  fontFamily: 'iranyekan',
-                                  fontSize: 12,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w700))
-                        ],
-                      )),
-                ),
-              ],
-            ),
-          ),
-        ),
+        bottomNavigationBar: AddToCart(widget.specialOffer),
         appBar: AppBar(
           toolbarHeight: 55,
           backgroundColor: Colors.red,
@@ -214,7 +370,7 @@ class SingleProduct extends StatelessWidget {
                       Align(
                         child: Image.asset(
                           //implement with page view builder for showing images later
-                          "assets/images/" + specialoffer.image!,
+                          "assets/images/" + widget.specialOffer.image!,
                           width: 240,
                           height: 225,
                           fit: BoxFit.fill,
@@ -253,7 +409,7 @@ class SingleProduct extends StatelessWidget {
                   padding: const EdgeInsets.only(right: 15, bottom: 10),
                   child: Align(
                     alignment: Alignment.topRight,
-                    child: Text(specialoffer.category!,
+                    child: Text(widget.specialOffer.category!,
                         textDirection: TextDirection.rtl,
                         style: TextStyle(
                             fontFamily: 'iranyekan',
@@ -267,7 +423,7 @@ class SingleProduct extends StatelessWidget {
                       const EdgeInsets.only(left: 15, right: 15, bottom: 10),
                   child: Align(
                     alignment: Alignment.centerRight,
-                    child: Text(specialoffer.Product_name!,
+                    child: Text(widget.specialOffer.Product_name!,
                         textDirection: TextDirection.rtl,
                         style: TextStyle(
                             fontFamily: 'iranyekan',
@@ -335,7 +491,7 @@ class SingleProduct extends StatelessWidget {
                               fontWeight: FontWeight.w900,
                             )),
                         Text(
-                          specialoffer.star.toString().toPersianDigit(),
+                          widget.specialOffer.star.toString().toPersianDigit(),
                           style: TextStyle(
                               fontFamily: 'iranyekan',
                               fontSize: 10,

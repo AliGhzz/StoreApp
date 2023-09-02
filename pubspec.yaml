@@ -39,7 +39,6 @@ dependencies:
   persian_number_utility: ^1.1.3
   cupertino_icons: ^1.0.5
   google_maps_flutter: ^2.4.1
-  # google_maps_flutter_web: ^0.5.4+2
   shared_preferences: ^2.2.1
 
 

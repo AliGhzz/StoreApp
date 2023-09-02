@@ -15,11 +15,30 @@ class _GoogleMapsState extends State<GoogleMaps> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        toolbarHeight: 55,
+        backgroundColor: Colors.red,
+        title: Text("شعب دیجی کالا برای دریافت حضوری",
+          style: TextStyle(
+            fontFamily: "iranyekan",
+            fontSize: 15
+          ),
+        ),
+        centerTitle: true,
+        elevation: 0,
+      ),
       body: GoogleMap(
-        mapType: MapType.hybrid,
+        markers: {
+          Marker(markerId:MarkerId("1"),position: LatLng(35.84833211436672, 50.91064713388881),
+          infoWindow: InfoWindow(snippet: "شعبه کرج",title: "دیجی کالا")), 
+          Marker(markerId:MarkerId("2"),position: LatLng(36.285121630165385, 50.00146324270263),
+          infoWindow: InfoWindow(snippet: "شعبه قزوین",title: "دیجی کالا")),
+          Marker(markerId: MarkerId("3"),position: LatLng(35.68786343615628, 51.35776674677362),
+          infoWindow: InfoWindow(snippet: "شعبه تهران",title: "دیجی کالا")) 
+        },
+        mapType: MapType.normal,
         initialCameraPosition: CameraPosition(
-          target: LatLng(35,55),
+          target: LatLng(35.68786343615628, 53),
           zoom: 5,
           // bearing: 100,
           // tilt: 
