@@ -22,7 +22,7 @@ class AddToCart extends StatefulWidget {
 }
 void addToCart(SpecialOffers specialoffer, [int n = 1]) {
     if (order.containsKey(specialoffer)) {
-      if (order[specialoffer]! < 9){
+      if (order[specialoffer]! <= 9){
         order[specialoffer] = order[specialoffer]! + n;
         specialoffer.count += n;
       }

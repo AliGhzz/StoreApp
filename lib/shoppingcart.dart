@@ -47,6 +47,7 @@ class _sCartState extends State<sCart> {
           children: [
             checkCartIsNotEmpty(basket),
             Container(
+              color: Colors.white,
               child: StreamBuilder<List>(
                   stream: baskets!.stream,
                   builder: (context, snapshot) {
@@ -186,7 +187,6 @@ class _sCartState extends State<sCart> {
     return Column(
       children: [
         Container(
-          color: Colors.white,
           child: Padding(
             padding:
                 const EdgeInsets.only(top: 10, left: 10, right: 5, bottom: 5),
@@ -406,7 +406,6 @@ class _sCartState extends State<sCart> {
           child: Padding(
             padding: const EdgeInsets.only(right: 10),
             child: Container(
-              color: Colors.white,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -481,7 +480,7 @@ class _sCartState extends State<sCart> {
                         IconButton(
                             onPressed: () {
                               setState(() {
-                                if (count <= 9) {
+                                if (count <= 8) {
                                   basket[index][1] += 1;
                                   count += 1;
                                   // order[basket[index][0]] = count;
@@ -507,7 +506,9 @@ class _sCartState extends State<sCart> {
   }
 
   IconButton showIcon(int count, int index) {
+    
     if (count >= 2) {
+      print(count);
       return IconButton(
         onPressed: () {
           setState(() {
