@@ -11,7 +11,6 @@ import 'main.dart';
 StreamController<List>? baskets;
 
 class sCart extends StatefulWidget {
-  const sCart({super.key});
   @override
   State<sCart> createState() => _sCartState();
 }
@@ -22,20 +21,6 @@ class _sCartState extends State<sCart> {
     super.initState();
     baskets = StreamController<List>();
   }
-
-  // void addToCart(SpecialOffers specialoffer, [int n = 1]) {
-    // if (order.containsKey(specialoffer)) {
-    //   order[specialoffer] = order[specialoffer]! + n;
-    // } else {
-    //   order[specialoffer] = n;
-    // }
-    // specialoffer.count += 1;
-    // basket.add(specialoffer);
-
-    // order.forEach((key, value) {
-    //   basket.add([key, value]);
-    // });
-  // }
 
   @override
   Widget build(BuildContext context) {

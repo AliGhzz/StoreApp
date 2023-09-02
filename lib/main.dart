@@ -16,6 +16,10 @@ import 'singleProduct.dart';
 List basket = [];
 Map<SpecialOffers, int> order = {};
 
+
+
+
+
 void main() {
   runApp(App());
 }
@@ -113,7 +117,7 @@ class _MyAppState extends State<MyApp> {
               Container(
                 width: MediaQuery.of(context).size.width * 0.5 - 15,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(bottom: 5),
@@ -549,7 +553,7 @@ class _MyAppState extends State<MyApp> {
     //   "https://dkstatics-public.digikala.com/digikala-adservice-banners/5502b48d35bdc2c46b8ee39878fa1b63f5b0b11e_1692721069.jpg?x-oss-process=image/quality,q_95/format,webp",
     //   "https://dkstatics-public.digikala.com/digikala-adservice-banners/6065cab36954954ec0e83dc9d76ec6c6db7ef66a_1692781545.jpg?x-oss-process=image/quality,q_95/format,webp",
     // ];
-    var response = ["dg1.webp", "dg2.webp", "dg3.webp", "dg4.webp"];
+    var response = ["dg1.png", "dg2.png", "dg3.png", "dg4.png"];
     for (int i = 0; i < response.length; i++) {
       models.add(PageViewModel(i + 1, response[i]));
     }

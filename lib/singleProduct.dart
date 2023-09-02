@@ -14,7 +14,6 @@ import 'shoppingcart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AddToCart extends StatefulWidget {
-  // const AddToCart({super.key});
   SpecialOffers specialOffer;
   AddToCart(this.specialOffer);
 
@@ -23,11 +22,13 @@ class AddToCart extends StatefulWidget {
 }
 void addToCart(SpecialOffers specialoffer, [int n = 1]) {
     if (order.containsKey(specialoffer)) {
-      order[specialoffer] = order[specialoffer]! + n;
-      specialoffer.count += 1;
+      if (order[specialoffer]! < 9){
+        order[specialoffer] = order[specialoffer]! + n;
+        specialoffer.count += n;
+      }
     } else {
       order[specialoffer] = n;
-      specialoffer.count += 1;
+      specialoffer.count += n;
     }
     basket = [];
     order.forEach((key, value) {
@@ -35,125 +36,6 @@ void addToCart(SpecialOffers specialoffer, [int n = 1]) {
     });
   }
 class _AddToCartState extends State<AddToCart> {
-  
-
-  // Container addToCartButton(specialoffer) {
-  //   if (specialoffer.isAdded == false) {
-  //     return Container(
-  //       height: 40,
-  //       width: 140,
-  //       child: ElevatedButton(
-  //           onPressed: () {
-  //             setState(() {
-  //               specialoffer.isAdded = true;
-  //               addToCart(specialoffer);
-  //             });
-  //           },
-  //           style: ElevatedButton.styleFrom(
-  //               backgroundColor: Colors.red,
-  //               padding: EdgeInsets.all(5),
-  //               shape: RoundedRectangleBorder(
-  //                   borderRadius: BorderRadius.circular(5))),
-  //           child: Row(
-  //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //             children: [
-  //               Icon(
-  //                 Icons.add_shopping_cart,
-  //                 size: 20,
-  //               ),
-  //               Text(" افزودن به سبد خرید",
-  //                   style: TextStyle(
-  //                       fontFamily: 'iranyekan',
-  //                       fontSize: 12,
-  //                       color: Colors.white,
-  //                       fontWeight: FontWeight.w700))
-  //             ],
-  //           )),
-  //     );
-  //   } else {
-  //     return Container(
-  //       width: 140,
-  //       height: 40,
-  //       decoration: BoxDecoration(
-  //           borderRadius: BorderRadius.circular(8),
-  //           border: Border.all(color: Colors.grey, width: 0.5)),
-  //       child: Row(
-  //         mainAxisAlignment: MainAxisAlignment.center,
-  //         children: [
-  //           showIcon(specialoffer),
-  //           Text(
-  //             order[specialoffer]!.toString().toPersianDigit(),
-  //             style: TextStyle(
-  //               fontFamily: 'iranyekan',
-  //               fontSize: 18,
-  //               color: Colors.red,
-  //             ),
-  //           ),
-  //           IconButton(
-  //               onPressed: () {
-  //                 setState(() {
-  //                   if ( order[specialoffer]==null || order[specialoffer]! <= 9 ) {
-  //                     // order[specialoffer] = order[specialoffer]! + 1;
-  //                     addToCart(specialoffer);
-  //                   }
-  //                 });
-  //               },
-  //               icon: Icon(
-  //                 CupertinoIcons.add,
-  //                 color: Colors.red,
-  //                 size: 24,
-  //               ))
-  //         ],
-  //       ),
-  //     );
-  //   }
-  // }
-
-  // IconButton showIcon(specialoffers) {
-  //   if (order[specialoffers]! >= 2) {
-  //     return IconButton(
-  //       onPressed: () {
-  //         setState(() {
-  //           // order[specialoffers] = order[specialoffers]! - 1;
-  //           addToCart(specialoffers, -1);
-  //         });
-  //       },
-  //       icon: Icon(
-  //         Icons.remove,
-  //         color: Colors.red,
-  //       ),
-  //     );
-  //   } else {
-  //     return IconButton(
-  //       onPressed: () {
-  //         setState(() {
-  //           // if (order[specialoffers] == 1) {
-  //           // order[specialoffers] = order[specialoffers]! - 1;
-  //           // addToCart(specialoffers, -1);
-  //           // for (int i = 0; i < basket.length; i++) {
-  //           //   if (basket[i][0] == specialoffers) {
-  //           //     basket[i][1] == basket[i][1] - 1;
-  //           //   }
-  //           // }
-  //           // }
-  //           // if (order[specialoffers] == 0) {
-  //           order.remove(specialoffers);
-  //           specialoffers.isAdded = false;
-  //           for (int i = 0; i < basket.length; i++) {
-  //             if (basket[i][0] == specialoffers) {
-  //               basket.removeAt(i);
-  //             }
-  //           }
-  //         });
-  //       },
-  //       icon: Icon(
-  //         CupertinoIcons.delete,
-  //         color: Colors.red,
-  //         size: 20,
-  //       ),
-  //     );
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -240,7 +122,6 @@ class _AddToCartState extends State<AddToCart> {
                 ),
               ],
             ),
-            // addToCartButton(widget.specialOffer)
             Container(
               height: 40,
               width: 140,
@@ -270,8 +151,9 @@ class _AddToCartState extends State<AddToCart> {
                               color: Colors.white,
                               fontWeight: FontWeight.w700))
                     ],
-                  )),
-            )
+                  )
+                ),
+            ),
           ],
         ),
       ),
