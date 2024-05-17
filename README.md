@@ -11,4 +11,4 @@
 
 
 <h2>📝 Description</h2>
-"In this application, you can view various products and add them to your shopping cart. Additionally, you can also view physical store locations on the map for in-person pickup."
+In this application, you can view various products and add them to your shopping cart. Additionally, you can also view physical store locations on the map for in-person pickup.
