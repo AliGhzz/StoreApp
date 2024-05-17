@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:f1/Models/specialOffers.dart';
-import 'package:f1/extra2.dart';
+import 'package:f1/all_product.dart';
 import 'package:f1/shoppingcart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

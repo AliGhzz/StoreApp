@@ -24,7 +24,7 @@ class _AllProductsState extends State<AllProducts> {
           backgroundColor: Colors.red,
           title: Text("DigiKala"),
           centerTitle: true,
-          actions: [
+          actions: [ 
             IconButton(
                 onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -60,7 +60,7 @@ class _AllProductsState extends State<AllProducts> {
                                   fontWeight: FontWeight.w100),
                             ),
                             Text(
-                              (specialOfferFuture!.length * 223)
+                              (specialOfferFuture!.length )
                                   .toString()
                                   .toPersianDigit()
                                   .seRagham(),
@@ -96,19 +96,11 @@ class _AllProductsState extends State<AllProducts> {
                           mainAxisExtent: 155,
                           childAspectRatio: 2,
                         ),
-                        // const SliverGridDelegateWithFixedCrossAxisCount(
-                        //     crossAxisCount: 1,
-                        //     crossAxisSpacing: 2,
-                        //     mainAxisSpacing: 2,
-                        //     mainAxisExtent: 155),
                         shrinkWrap: true,
                         physics: ScrollPhysics(),
                         itemBuilder: (context, index) {
                           return showSpecialOfferGridView(
                               specialOfferFuture![index]);
-                          // return Container(
-                          //   color: Colors.amber,
-                          // );
                         },
                         itemCount: 8,
                         scrollDirection: Axis.vertical),
@@ -213,12 +205,6 @@ class _AllProductsState extends State<AllProducts> {
                               size: 15,
                               color: Colors.purple,
                             ),
-                            // Image.asset(
-                            //   "assets/images/cash.png",
-                            //   height: 15,
-                            //   width: 15,
-                            //   fit: BoxFit.fill,
-                            // ),
                           ],
                         ),
                       ],

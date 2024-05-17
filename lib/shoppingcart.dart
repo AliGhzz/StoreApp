@@ -460,7 +460,7 @@ class _sCartState extends State<sCart> {
                   ),
                   SizedBox(width: 10),
                   Container(
-                    width: 105,
+                    width: 112,
                     height: 40,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
@@ -508,7 +508,6 @@ class _sCartState extends State<sCart> {
   IconButton showIcon(int count, int index) {
     
     if (count >= 2) {
-      print(count);
       return IconButton(
         onPressed: () {
           setState(() {

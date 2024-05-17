@@ -10,15 +10,12 @@ import 'package:progress_indicators/progress_indicators.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
-import 'extra2.dart';
+import 'all_product.dart';
 import 'singleProduct.dart';
+import 'package:lottie/lottie.dart';
 
 List basket = [];
 Map<SpecialOffers, int> order = {};
-
-
-
-
 
 void main() {
   runApp(App());
@@ -177,7 +174,6 @@ class _MyAppState extends State<MyApp> {
           child: Center(
             child: Column(
               children: [
-                // SizedBox(height:3),
                 Container(
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(0),
@@ -195,12 +191,7 @@ class _MyAppState extends State<MyApp> {
                                 PageView.builder(
                                     controller: pageController,
                                     allowImplicitScrolling: true,
-                                    // itemCount: pageViewFuture!.length,
-                                    // reverse: true,
-                                    // scrollDirection: Axis.vertical,
                                     itemBuilder: (context, index) {
-                                      // final index = _index;
-                                      // print(pageController.page);
                                       return showPageView(
                                           pageViewFuture![index % 4]);
                                     }),
@@ -227,65 +218,11 @@ class _MyAppState extends State<MyApp> {
                             ),
                           );
                         } else {
-                          return Center(
-                              child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                CollectionSlideTransition(
-                                  children: <Widget>[
-                                    Container(
-                                      width: 20,
-                                      height: 20,
-                                      color: Colors.yellow[300],
-                                    ),
-                                    Container(
-                                      width: 20,
-                                      height: 20,
-                                      color: Colors.yellow[600],
-                                    ),
-                                    Container(
-                                      width: 20,
-                                      height: 20,
-                                      color: Colors.orange[400],
-                                    ),
-                                    Container(
-                                      width: 20,
-                                      height: 20,
-                                      color: Colors.orange[600],
-                                    ),
-                                    Container(
-                                      width: 20,
-                                      height: 20,
-                                      color: Colors.orange[800],
-                                    ),
-                                    Container(
-                                      width: 20,
-                                      height: 20,
-                                      color: Colors.red[400],
-                                    ),
-                                    Container(
-                                      width: 20,
-                                      height: 20,
-                                      color: Colors.red[500],
-                                    ),
-                                    Container(
-                                      width: 20,
-                                      height: 20,
-                                      color: Colors.red[600],
-                                    ),
-                                    Container(
-                                      width: 20,
-                                      height: 20,
-                                      color: Colors.red[700],
-                                    ),
-                                    Container(
-                                      width: 20,
-                                      height: 20,
-                                      color: Colors.red[800],
-                                    ),
-                                  ],
-                                ),
-                              ]));
+                          return Container(
+                            child: Lottie.asset('assets/loading.json'),
+                            width:double.infinity,
+                          );
+
                         }
                       }),
                 ),
@@ -420,14 +357,8 @@ class _MyAppState extends State<MyApp> {
                                   }
                                 });
                           } else {
-                            return Center(
-                              child: JumpingDotsProgressIndicator(
-                                color: Colors.white,
-                                numberOfDots: 3,
-                                dotSpacing: 3,
-                                fontSize: 5,
-                              ),
-                            );
+                            return Lottie.asset('assets/loading.json');
+
                           }
                         }),
                   ),
@@ -521,13 +452,9 @@ class _MyAppState extends State<MyApp> {
                             ),
                           );
                         } else {
-                          return Center(
-                            child: JumpingDotsProgressIndicator(
-                              color: Colors.white,
-                              numberOfDots: 3,
-                              dotSpacing: 3,
-                              fontSize: 5,
-                            ),
+                          return Container(
+                            child: Lottie.asset('assets/loading.json'),
+                            width:double.infinity,
                           );
                         }
                       },
@@ -544,18 +471,15 @@ class _MyAppState extends State<MyApp> {
 
   Future<List<PageViewModel>> sendRequestPageView() async {
     List<PageViewModel> models = [];
-    /*
-    dynamic response =await Dio().get("given api isn's working");
-    for (var item in Response.data) {
-      models.add(PageViewModel(item[0], item[1]));
-    }
-    */
-    // var response = [
-    //   "https://dkstatics-public.digikala.com/digikala-adservice-banners/aa50ca4d614c91742f231cab21772eee91515b7e_1690058927.jpg?x-oss-process=image/quality,q_95/format,webp",
-    //   "https://dkstatics-public.digikala.com/digikala-adservice-banners/b279740ab8e28cb82b5fbda02d728206b321d821_1692030401.jpg?x-oss-process=image/quality,q_95/format,webp",
-    //   "https://dkstatics-public.digikala.com/digikala-adservice-banners/5502b48d35bdc2c46b8ee39878fa1b63f5b0b11e_1692721069.jpg?x-oss-process=image/quality,q_95/format,webp",
-    //   "https://dkstatics-public.digikala.com/digikala-adservice-banners/6065cab36954954ec0e83dc9d76ec6c6db7ef66a_1692781545.jpg?x-oss-process=image/quality,q_95/format,webp",
-    // ];
+    
+    // dynamic response =await Dio().get("place api here");
+    // print(response.data.toString());
+    // print('--------------------');
+    // for (var item in Response.data) {
+    //   models.add(PageViewModel(item[0], item[1]));
+    // }
+    
+    
     var response = ["dg1.png", "dg2.png", "dg3.png", "dg4.png"];
     for (int i = 0; i < response.length; i++) {
       models.add(PageViewModel(i + 1, response[i]));
@@ -569,17 +493,12 @@ class _MyAppState extends State<MyApp> {
       child: AspectRatio(
         aspectRatio: 1.0 / 1.0,
         child: Container(
-            // margin: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
             child: ClipRRect(
           child: Image.asset(
             "assets/images/" + photo.image!,
             fit: BoxFit.fill,
           ),
           borderRadius: BorderRadius.circular(15),
-          // child: Image.network(
-          //   photo.image!,
-          //   fit: BoxFit.fill,
-          // ),
         )),
       ),
     );
@@ -588,7 +507,7 @@ class _MyAppState extends State<MyApp> {
   Future<List<EventsModel>> sendRequestEvents() async {
     List<EventsModel> models = [];
     /*
-    dynamic response =await Dio().get("given api isn's working");
+    dynamic response =await Dio().get("place api here");
     for (var item in Response.data) {
       models.add(SpecialOffers(item));
     }
@@ -617,7 +536,6 @@ class _MyAppState extends State<MyApp> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
-                // crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
                     "شگفت انگیز اختصاصی اپ",
@@ -730,7 +648,7 @@ class _MyAppState extends State<MyApp> {
   Future<List<SpecialOffers>> sendRequestSpecialOffers() async {
     List<SpecialOffers> models = [];
     /*
-    dynamic response =await Dio().get("given api isn's working");
+    dynamic response =await Dio().get("place api here");
     for (var item in Response.data) {
       models.add(SpecialOffers(item[0], item[1],item[2], item[3],item[4], item[5],));
     }
@@ -773,14 +691,14 @@ class _MyAppState extends State<MyApp> {
       [
         7,
         "لپ تاپ 13.3 اینچی اپل مدل MacBook Air MGN63 2020 LLA",
-        42330000,
         44100000,
+        42330000,
         4,
         "box8.webp",
         3.6,
         "کامپیوتر و لپ تاپ"
       ],
-      [8, "دوربین", 10769000, 12100000, 11, "box9.webp", 3.9, "ابزار و وسایل"],
+      [8, "دوربین", 12100000, 10769000, 11, "box9.webp", 3.9, "ابزار و وسایل"],
     ];
     // DateTime.now().toPersianDateStr(strDay: true, strMonth: true,monthString: );
     var value = intl.NumberFormat("#,###.##", "en_US");
