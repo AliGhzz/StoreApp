@@ -1,14 +1,13 @@
 # Store App
 
 <div style="display: flex">
-    <img src="https://github.com/AliGhzz/StoreApp/assets/77566367/47ff773d-dd1a-4c6a-b557-e4d92ed5ead7" style="width: 30%;">
-    <img src="https://github.com/AliGhzz/StoreApp/assets/77566367/8a8845d4-ae3b-47b9-8ee0-97d033a94792" style="width: 30%;">
-    <img src="https://github.com/AliGhzz/StoreApp/assets/77566367/d4609b67-a80d-48fc-acd3-0100d0466ac7" style="width: 30%;">
-    <img src="https://github.com/AliGhzz/StoreApp/assets/77566367/2f9cb122-9094-413c-b917-c3cd399e8c20" style="width: 30%;">
-    <img src="https://github.com/AliGhzz/StoreApp/assets/77566367/95acd4f4-8882-4471-b9af-bb99e0e15808" style="width: 30%;">
-    <img src="https://github.com/AliGhzz/StoreApp/assets/77566367/da5b7fec-97c9-441f-9103-ca45813b6758" style="width: 30%;">
+    <img src="https://github.com/AliGhzz/StoreApp/assets/77566367/50964fb9-8dbe-4373-bd51-5570aae1d2e9" style="width: 30%;">
+    <img src="https://github.com/AliGhzz/StoreApp/assets/77566367/ef3673a4-3380-4b31-9fe5-5c5b7b7e9ede" style="width: 30%;">
+    <img src="https://github.com/AliGhzz/StoreApp/assets/77566367/25426c86-23b0-4a65-9da5-75a3e0e9cdf6" style="width: 30%;">
+    <img src="https://github.com/AliGhzz/StoreApp/assets/77566367/72af9518-a2e7-464d-bb89-9114ff462c81" style="width: 30%;">
+    <img src="https://github.com/AliGhzz/StoreApp/assets/77566367/cd4c8853-6d83-42d8-bf1e-f4736ec213da" style="width: 30%;">
+    <img src="https://github.com/AliGhzz/StoreApp/assets/77566367/d89e29ea-755b-4076-aaec-0bfa9934e423" style="width: 30%;">
 </div>
-
 
 
 ## Getting Started
